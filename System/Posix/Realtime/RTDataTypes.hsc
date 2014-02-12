@@ -1,4 +1,4 @@
-{-# OPTIONS -fffi #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  System.Posix.Realtime.RTDataTypes
@@ -41,9 +41,9 @@ import Data.Word
 
 
 #ifdef __GLASGOW_HASKELL__
-import GHC.IOBase
-import GHC.Handle hiding (fdToHandle)
-import qualified GHC.Handle
+import GHC.IO
+import GHC.IO.Handle hiding (fdToHandle)
+import qualified GHC.IO.Handle
 #endif
 
 #ifdef __HUGS__
@@ -63,12 +63,7 @@ import qualified Hugs.IO (handleToFd, openFd)
 
 -- data Sigval = SivalInt Int | SivalPtr (Ptr Char) -- TBD!!!!!!!!!!  
 newtype Sigval = SivalInt Int  -- TEMP  
-
-
-instance Show Sigval where
-
-   show (SivalInt int) = (show int) 
-
+  deriving(Show)
 
 
 instance Storable Sigval where
@@ -102,19 +97,7 @@ data Sigevent = Sigevent {
          sigevFunction :: FunPtr (Sigval -> IO ()),
 
          sigevAttribute :: Ptr Char
-}          
-
-
-instance Show Sigevent where
-
-   show (Sigevent {sigevVal=val}) = (show val)
-
-   show (Sigevent {sigevNotify=notify}) = (show notify) 
-
-   show (Sigevent {sigevSigno=signo}) = (show signo) 
-
-   show (Sigevent {sigevFunction=function}) = "callback function\n"
-
+} deriving(Show)
 
 instance Storable Sigevent where
 
@@ -157,10 +140,8 @@ data TimeSpec = TimeSpec {
         tvSec :: Int,     -- Seconds
 
         tvNsec :: Int     -- Nano-seconds
-}
+} deriving Show
 
-
-instance Show TimeSpec where
 
 
 instance Storable TimeSpec where
@@ -192,11 +173,7 @@ data ItimerSpec = ItimerSpec {
 
          itValue :: TimeSpec       -- ^ Timer expiration
 
-}
-
-
-
-instance Show ItimerSpec where
+} deriving(Show)
 
 
 instance Storable ItimerSpec where

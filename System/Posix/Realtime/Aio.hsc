@@ -1,4 +1,4 @@
-{-# OPTIONS -fffi -XEmptyDataDecls #-}
+{-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  System.Posix.Realtime.Aio
@@ -57,9 +57,9 @@ import Data.Bits
 
 
 #ifdef __GLASGOW_HASKELL__
-import GHC.IOBase
-import GHC.Handle hiding (fdToHandle)
-import qualified GHC.Handle
+import GHC.IO
+import GHC.IO.Handle hiding (fdToHandle)
+import qualified GHC.IO.Handle
 #endif
 
 #ifdef __HUGS__
