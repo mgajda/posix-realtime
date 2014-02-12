@@ -188,9 +188,9 @@ instance Storable TimeSpec where
 data ItimerSpec = ItimerSpec {
 
 
-         itInterval :: TimeSpec,   -- | Timer period
+         itInterval :: TimeSpec,   -- ^ Timer period
 
-         itValue :: TimeSpec       -- | Timer expiration
+         itValue :: TimeSpec       -- ^ Timer expiration
 
 }
 
