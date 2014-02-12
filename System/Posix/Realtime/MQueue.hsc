@@ -232,7 +232,7 @@ mqReceive (Fd mqd) len (Just prio) = do
       with (fromIntegral prio) $ \ p_prio -> do
         rc <- throwErrnoIfMinus1 "mqReceive" (c_mq_receive mqd p_buffer (fromIntegral len) p_prio)
         case fromIntegral rc of
-          0 -> ioError (IOError Nothing EOF "mqReceive" "EOF" Nothing)
+          0 -> ioError (IOError Nothing EOF "mqReceive" "EOF" Nothing Nothing)
           n -> do
            s <- peekCStringLen (p_buffer, fromIntegral n)
            return (s, n)
@@ -240,7 +240,7 @@ mqReceive (Fd mqd) len Nothing = do
     allocaBytes (fromIntegral len) $ \ p_buffer -> do
       rc <- throwErrnoIfMinus1 "mqReceive" (c_mq_receive mqd p_buffer (fromIntegral len) nullPtr)
       case fromIntegral rc of
-        0 -> ioError (IOError Nothing EOF "mqReceive" "EOF" Nothing)
+        0 -> ioError (IOError Nothing EOF "mqReceive" "EOF" Nothing Nothing)
         n -> do
          s <- peekCStringLen (p_buffer, fromIntegral n)
          return (s, n)
