@@ -1,7 +1,7 @@
 AC_INIT([Haskell unix package], [2.0], [libraries@haskell.org], [unix])
 
 # Safety check: Ensure that we are in the correct source directory.
-AC_CONFIG_SRCDIR([include/HsUnix.h])
+AC_CONFIG_SRCDIR([include/HsUnixConfig.h])
 
 AC_CONFIG_HEADERS([include/HsUnixConfig.h])
 

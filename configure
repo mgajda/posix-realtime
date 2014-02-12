@@ -578,7 +578,6 @@ PACKAGE_VERSION='2.0'
 PACKAGE_STRING='Haskell unix package 2.0'
 PACKAGE_BUGREPORT='libraries@haskell.org'
 
-ac_unique_file="include/HsUnix.h"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
