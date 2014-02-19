@@ -12,7 +12,7 @@ description:
 	IEEE Std. 1003.1).
 	.
 	The package is not supported under Windows (except under Cygwin).
-cabal-version: >= 1.2
+cabal-version: >= 1.6
 build-type: Configure
 extra-source-files:
                 configure.ac configure
