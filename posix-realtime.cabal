@@ -1,5 +1,5 @@
 name:		posix-realtime
-version:	0.0.0.2
+version:	0.0.0.3
 license:	BSD3
 license-file:	LICENSE
 category:       System
@@ -29,7 +29,7 @@ library
                   System.Posix.Realtime.RTDataTypes
                   System.Posix.Realtime.RTTime
                   System.Posix.Realtime.Aio
-  build-depends:  base > 4.5 && < 4.8, unix < 2.7
+  build-depends:  base > 4.5 && < 4.8, unix
   extensions:	CPP, ForeignFunctionInterface
   include-dirs: 	include
   install-includes:
