@@ -1,5 +1,8 @@
 -*-Changelog-*-
 
+0.0.3  May 2015
+	* Relaxed dependencies for GHC 7.10
+
 0.0.2  Feb 2014
 	* Updated to work with GHC 7.6.
 
