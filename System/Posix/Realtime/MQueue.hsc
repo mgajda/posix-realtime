@@ -137,13 +137,13 @@ mqOpen name how maybe_mode (Just attrs) = do
     all_flags  = creat .|. open_mode 
 
     (creat, mode_w) = case maybe_mode of 
-			Nothing -> (0,0)
-			Just x  -> ((#const O_CREAT), x)
+            Nothing -> (0,0)
+            Just x  -> ((#const O_CREAT), x)
 
     open_mode = case how of
-		   ReadOnly  -> (#const O_RDONLY)
-		   WriteOnly -> (#const O_WRONLY)
-		   ReadWrite -> (#const O_RDWR)
+           ReadOnly  -> (#const O_RDONLY)
+           WriteOnly -> (#const O_WRONLY)
+           ReadWrite -> (#const O_RDWR)
 mqOpen name how maybe_mode Nothing = do
    withCString name $ \ p_name -> do
      mqd <- throwErrnoPathIfMinus1 "mqOpen" name (c_mq_open p_name all_flags mode_w nullPtr)
@@ -152,13 +152,13 @@ mqOpen name how maybe_mode Nothing = do
     all_flags  = creat .|. open_mode 
 
     (creat, mode_w) = case maybe_mode of 
-			Nothing -> (0,0)
-			Just x  -> ((#const O_CREAT), x)
+            Nothing -> (0,0)
+            Just x  -> ((#const O_CREAT), x)
 
     open_mode = case how of
-		   ReadOnly  -> (#const O_RDONLY)
-		   WriteOnly -> (#const O_WRONLY)
-		   ReadWrite -> (#const O_RDWR)
+           ReadOnly  -> (#const O_RDONLY)
+           WriteOnly -> (#const O_WRONLY)
+           ReadWrite -> (#const O_RDWR)
 
 foreign import ccall unsafe "bits/mqueue.h mq_open"
     c_mq_open :: CString -> CInt -> CMode -> Ptr MQAttributes -> IO CInt
