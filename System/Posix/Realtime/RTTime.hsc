@@ -9,7 +9,8 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (requires POSIX)
 --
--- POSIX Realtime Timer and Clock support
+-- POSIX Realtime Timer and Clock support.  See
+-- <http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html>.
 --
 -----------------------------------------------------------------------------
 
@@ -50,7 +51,7 @@ type CClockId = Int
 data SetTimeFlag = Timer_Abstime
 
 
--- | Create a realtime timer
+-- | Create a realtime timer.
 timerCreate :: ClockId -> Maybe Sigevent -> IO TimerId
 timerCreate clockId (Just sigEvent) =
   allocaBytes (#const sizeof(struct sigevent)) $ \ p_sigevent -> do
@@ -70,7 +71,7 @@ foreign import ccall safe "time.h timer_create"
   c_timer_create :: CInt -> Ptr Sigevent -> Ptr TimerId -> IO CInt
 
 
--- | Delete the timer designated by "timerId".
+-- | Delete a timer.
 timerDelete :: TimerId -> IO ()
 timerDelete timerId = do
   throwErrnoIfMinus1 "timerDelete" (c_timer_delete (fromIntegral timerId))
@@ -80,7 +81,7 @@ foreign import ccall safe "time.h timer_delete"
   c_timer_delete :: CInt -> IO CInt
 
 
--- | Get the current timer state
+-- | Get the timer state.
 timerGetTime :: TimerId -> IO ItimerSpec
 timerGetTime timerId =
   allocaBytes (#const sizeof(struct itimerspec)) $ \ p_itimerSpec -> do
@@ -92,7 +93,7 @@ foreign import ccall safe "time.h timer_gettime"
   c_timer_gettime :: CInt -> Ptr ItimerSpec-> IO CInt 
 
 
--- | Set the current timer state
+-- | Set the timer state.
 timerSetTime :: TimerId -> SetTimeFlag -> ItimerSpec -> IO ItimerSpec
 timerSetTime timerId setTimeFlag itimerSpec = do 
   allocaBytes (#const sizeof(struct itimerspec)) $ \ p_itimerSpec -> do
@@ -110,7 +111,7 @@ foreign import ccall safe "time.h timer_settime"
   c_timer_settime :: CInt -> CInt -> Ptr ItimerSpec -> Ptr ItimerSpec-> IO CInt 
 
 
--- | Get the timer overrun count!
+-- | Get the timer overrun count.
 timerGetOverrun :: TimerId -> IO Int
 timerGetOverrun timerId = do
   rc <- throwErrnoIfMinus1 "timerGetoverrun" (c_timer_getoverrun (fromIntegral timerId))
@@ -120,7 +121,7 @@ foreign import ccall safe "time.h timer_getoverrun"
   c_timer_getoverrun :: CInt -> IO CInt
 
 
--- | Get clock resolution
+-- | Get clock resolution.
 clockGetRes :: ClockId -> IO TimeSpec
 clockGetRes clockId =
   allocaBytes (#const sizeof(struct timespec)) $ \ p_timeSpec -> do
@@ -132,7 +133,7 @@ foreign import ccall safe "time.h clock_getres"
   c_clock_getres :: CInt -> Ptr TimeSpec -> IO CInt
 
 
--- | Get clock time
+-- | Get clock time.
 clockGetTime :: ClockId -> IO TimeSpec
 clockGetTime clockId =
   allocaBytes (#const sizeof(struct timespec)) $ \ p_timeSpec -> do
@@ -144,7 +145,7 @@ foreign import ccall safe "time.h clock_gettime"
   c_clock_gettime :: CInt -> Ptr TimeSpec -> IO CInt
 
 
--- | Set clock time
+-- | Set clock time.
 clockSetTime :: ClockId -> TimeSpec -> IO ()
 clockSetTime clockId timeSpec =
   allocaBytes (#const sizeof(struct timespec)) $ \ p_timeSpec -> do
@@ -155,7 +156,7 @@ foreign import ccall safe "time.h clock_settime"
   c_clock_settime :: CInt -> Ptr TimeSpec -> IO CInt
 
 
--- | Helper function that maps a clockid to it's C representation!
+-- | Helper function that maps a clockid to it's C representation.
 mapClockId :: ClockId -> CClockId
 mapClockId clockId = case clockId of
   Clock_Realtime             -> (#const CLOCK_REALTIME)
