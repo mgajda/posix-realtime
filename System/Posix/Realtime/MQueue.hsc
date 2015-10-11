@@ -9,7 +9,8 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (requires POSIX)
 --
--- POSIX 1003.1b message queue support.
+-- POSIX 1003.1b message queue support.  See
+-- <http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/mqueue.h.html>.
 --
 -----------------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ module System.Posix.Realtime.MQueue (
   MQAttributes(..),
 
   -- ** Opening\/closing\/unlinking mqueues
+  Name,
   mqOpen,
   mqClose,
   mqUnlink,
@@ -92,14 +94,15 @@ instance Storable MQAttributes where
     return (MQAttributes flags maxMsgNum maxMsgSize curNumMsgs)
 
 
--- | Open and optionally create this message queue.  See 'System.Posix.Files'
--- for information on how to use the 'FileMode' type.
+-- | Open and optionally create a message queue
 --
--- Note: After referring to several mqueue implementations, it seems that the POSIX standard doesn't tightly constrain "Name"'s syntax. E.g. one Linux implementation expects that "Name" starts with a "/". This is a warning to the user. The author wasted a fair amount of time on this issue and and doesn't wish this on others ...
+-- /Note/: The POSIX standard puts some constraints on 'Name' but leaves much as
+-- "implementation-defined", meaning that one needs to read the system-specific
+-- details on what a conforming name should look like.
 mqOpen :: Name
        -> OpenMode
-       -> Maybe FileMode -- ^Just x => creates the file with the given modes, Nothing => the file must exist.
-       -> Maybe MQAttributes
+       -> Maybe FileMode -- ^ @Just x@ creates the queue with the given modes, @Nothing@ then the file must exist.
+       -> Maybe MQAttributes -- ^ @Just x@ creates the queue with given attributes, @Nothing@ with default attributes.
        -> IO Fd
 mqOpen name how maybe_mode (Just attrs) = do
   withCString name $ \ p_name -> do
@@ -139,7 +142,7 @@ foreign import ccall unsafe "bits/mqueue.h mq_open"
   c_mq_open :: CString -> CInt -> CMode -> Ptr MQAttributes -> IO CInt
 
 
--- | Close a POSIX mqueue designated by "mqd"
+-- | Close a message queue
 mqClose :: Fd -> IO ()
 mqClose (Fd mqd) = throwErrnoIfMinus1_ "mqClose" (c_mq_close mqd)
 
@@ -147,7 +150,7 @@ foreign import ccall unsafe "mqueue.h mq_close"
   c_mq_close :: CInt -> IO CInt
 
 
--- | Unlink (destroy) an existing POSIX mqueue designated by "name"
+-- | Unlink (destroy) an existing message queue
 mqUnlink :: String -> IO ()
 mqUnlink name = do
   withCString name $ \ p_name -> do
@@ -158,7 +161,7 @@ foreign import ccall unsafe "mqueue.h mq_unlink"
   c_mq_unlink :: CString -> IO CInt
 
 
--- | Get the attributes for an existing POSIX message queue designated by "mqd"
+-- | Get the attributes for an existing message queue
 mqGetAttributes :: Fd -> IO MQAttributes
 mqGetAttributes (Fd mqd) = do
   allocaBytes (#const sizeof(struct mq_attr)) $ \ p_attrs -> do
@@ -170,7 +173,7 @@ foreign import ccall unsafe "mqueue.h mq_getattr"
   c_mq_getattr :: CInt ->  Ptr MQAttributes -> IO CInt
 
 
--- | Set the attributes for an existing POSIX mqueue designated by "mqd" and retrieve old attributes
+-- | Set the attributes for an existing message queue and its retrieve old attributes
 mqSetAttributes :: Fd -> MQAttributes -> IO (MQAttributes)
 mqSetAttributes (Fd mqd) newAttrs = do
   allocaBytes (#const sizeof(struct mq_attr)) $ \ p_attrs -> do
@@ -184,7 +187,7 @@ foreign import ccall unsafe "mqueue.h mq_setattr"
   c_mq_setattr :: CInt ->  Ptr MQAttributes -> Ptr MQAttributes -> IO CInt
 
 
--- | Retrieve a message from mqueue designated by "mqd"
+-- | Retrieve a message from a message queue
 mqReceive :: Fd -> ByteCount -> Maybe Int -> IO (String, Int)
 mqReceive (Fd mqd) len (Just prio) = do
   allocaBytes (fromIntegral len) $ \ p_buffer -> do
@@ -209,7 +212,7 @@ foreign import ccall unsafe "mqueue.h mq_receive"
   c_mq_receive :: CInt -> Ptr CChar -> CSize -> Ptr CInt -> IO CInt
 
 
--- | Send a message on mqueue designated by "mqd"
+-- | Send a message on a message queue
 mqSend :: Fd -> String -> ByteCount -> Int -> IO ()
 mqSend (Fd mqd) msg len prio = do
   withCString msg $ \ p_msg -> do
@@ -220,7 +223,7 @@ foreign import ccall unsafe "mqueue.h mq_send"
   c_mq_send :: CInt -> Ptr CChar -> CSize -> CInt -> IO CInt
 
 
--- | Notify a registered process of the new-message-in-empty-queue event!
+-- | Notify a registered process of the new-message-in-empty-queue event
 mqNotify :: Fd -> Maybe Sigevent -> IO ()
 mqNotify (Fd mqd) Nothing = do
   throwErrnoIfMinus1 "mqNotify" (c_mq_notify mqd nullPtr)
