@@ -9,7 +9,8 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (requires POSIX)
 --
--- POSIX 1003.1b realtime scheduling support.
+-- POSIX 1003.1b realtime scheduling support.  See
+-- <http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html>.
 --
 -----------------------------------------------------------------------------
 
