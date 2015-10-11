@@ -9,7 +9,8 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (requires POSIX)
 --
--- POSIX 1003.1b  POSIX Asynchronous I/O
+-- POSIX 1003.1b  POSIX Asynchronous I\/O.  See
+-- <http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html>.
 --
 -----------------------------------------------------------------------------
 
@@ -169,7 +170,7 @@ foreign import ccall safe "aio.h aio_suspend"
   c_aio_suspend :: Ptr (Ptr AIOCBStruct) -> CInt -> Ptr TimeSpec -> IO CInt
 
 
--- | makeAIOCB is a helper function that builds an "aiocb" from all its fields
+-- | a helper function that builds an 'AIOCB' from all its fields
 makeAIOCB :: Fd -> Int -> Int -> FileOffset -> Ptr Word8 -> ByteCount -> Sigevent -> IO AIOCB
 makeAIOCB fd lioOpcode reqPrio fileOffset buffer byteCount sigEvent = do
   fptr <- mallocForeignPtrBytes (#const sizeof (struct aiocb))
