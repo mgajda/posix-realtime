@@ -188,6 +188,9 @@ foreign import ccall unsafe "mqueue.h mq_setattr"
 
 
 -- | Retrieve a message from a message queue
+--
+-- /Note/: @mq_timedreceive@ is not exposed, wrap 'mqReceive' in 'System.Timeout.timeout'
+-- to get a timed receive.
 mqReceive :: Fd -> ByteCount -> Maybe Int -> IO (String, Int)
 mqReceive (Fd mqd) len (Just prio) = do
   allocaBytes (fromIntegral len) $ \ p_buffer -> do
