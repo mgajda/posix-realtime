@@ -9,7 +9,7 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (requires POSIX)
 --
--- POSIX 1003.1b  real-time data types used by multiple Haskell modules
+-- POSIX 1003.1b real-time data types used by multiple Haskell modules.
 --
 -----------------------------------------------------------------------------
 
