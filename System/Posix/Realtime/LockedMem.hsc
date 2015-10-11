@@ -9,7 +9,8 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (requires POSIX)
 --
--- POSIX 1003.1b memory locking support.
+-- POSIX 1003.1b memory locking support.  See
+-- <http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_mman.h.html>.
 --
 -----------------------------------------------------------------------------
 
@@ -85,7 +86,7 @@ foreign import ccall unsafe "sys/mman.h mlockall"
   c_mlockall :: CInt -> IO CInt
 
 
--- | unlock all mapped pages of a process!
+-- | unlock all mapped pages of a process
 unlockAllMemory :: IO ()
 unlockAllMemory = do
   throwErrnoIfMinus1 "unlockAllMemory" c_munlockall
