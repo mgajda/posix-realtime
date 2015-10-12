@@ -13,13 +13,7 @@ description:
 	.
 	The package is not supported under Windows (except under Cygwin).
 cabal-version: >= 1.6
-build-type: Configure
-extra-source-files:
-                configure.ac configure
-                unix.buildinfo.in include/HsUnixConfig.h.in
-extra-tmp-files:
-                config.log config.status autom4te.cache
-                unix.buildinfo include/HsUnixConfig.h
+build-type: Simple
 
 library
   exposed-modules:
@@ -31,9 +25,6 @@ library
                   System.Posix.Realtime.Aio
   build-depends:  base > 4.5 && < 4.11, unix
   extensions:	CPP, ForeignFunctionInterface
-  include-dirs: 	include
-  install-includes:
-                  HsUnixConfig.h
 
 source-repository head
   type:     git
