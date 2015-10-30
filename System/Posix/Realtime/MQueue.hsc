@@ -220,6 +220,7 @@ mqSend :: Fd -> String -> ByteCount -> Int -> IO ()
 mqSend (Fd mqd) msg len prio = do
   withCString msg $ \ p_msg -> do
     throwErrnoPathIfMinus1 "mqSend" msg (c_mq_send mqd p_msg (fromIntegral len) (fromIntegral prio))
+    throwErrnoIfMinus1 "mqSend" (c_mq_send mqd p_msg (fromIntegral len) (fromIntegral prio))
     return ()
 
 foreign import ccall unsafe "mqueue.h mq_send"
