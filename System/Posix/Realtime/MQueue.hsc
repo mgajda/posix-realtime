@@ -50,6 +50,7 @@ import System.Posix.Internals
 import Foreign
 import Foreign.C
 import Data.Bits
+import Data.ByteString
 
 #ifdef __GLASGOW_HASKELL__
 import GHC.IO
@@ -191,7 +192,7 @@ foreign import ccall unsafe "mqueue.h mq_setattr"
 --
 -- /Note/: @mq_timedreceive@ is not exposed, wrap 'mqReceive' in 'System.Timeout.timeout'
 -- to get a timed receive.
-mqReceive :: Fd -> ByteCount -> Maybe Int -> IO (String, Int)
+mqReceive :: Fd -> ByteCount -> Maybe Int -> IO (ByteString, Int)
 mqReceive (Fd mqd) len (Just prio) = do
   allocaBytes (fromIntegral len) $ \ p_buffer -> do
     with (fromIntegral prio) $ \ p_prio -> do
@@ -199,7 +200,7 @@ mqReceive (Fd mqd) len (Just prio) = do
       case fromIntegral rc of
         0 -> ioError (IOError Nothing EOF "mqReceive" "EOF" Nothing Nothing)
         n -> do
-          s <- peekCStringLen (p_buffer, fromIntegral n)
+          s <- packCStringLen (p_buffer, fromIntegral n)
           return (s, n)
 
 mqReceive (Fd mqd) len Nothing = do
@@ -208,7 +209,7 @@ mqReceive (Fd mqd) len Nothing = do
     case fromIntegral rc of
       0 -> ioError (IOError Nothing EOF "mqReceive" "EOF" Nothing Nothing)
       n -> do
-        s <- peekCStringLen (p_buffer, fromIntegral n)
+        s <- packCStringLen (p_buffer, fromIntegral n)
         return (s, n)
 
 foreign import ccall unsafe "mqueue.h mq_receive"
@@ -216,10 +217,9 @@ foreign import ccall unsafe "mqueue.h mq_receive"
 
 
 -- | Send a message on a message queue
-mqSend :: Fd -> String -> ByteCount -> Int -> IO ()
+mqSend :: Fd -> ByteString -> ByteCount -> Int -> IO ()
 mqSend (Fd mqd) msg len prio = do
-  withCString msg $ \ p_msg -> do
-    throwErrnoPathIfMinus1 "mqSend" msg (c_mq_send mqd p_msg (fromIntegral len) (fromIntegral prio))
+  useAsCString msg $ \ p_msg -> do
     throwErrnoIfMinus1 "mqSend" (c_mq_send mqd p_msg (fromIntegral len) (fromIntegral prio))
     return ()
 
