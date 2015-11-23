@@ -1,0 +1,10 @@
+resolver: lts-3.9
+
+packages:
+  - '.'
+
+flags: {}
+extra-package-dbs: []
+extra-deps: []
+
+system-ghc: false
