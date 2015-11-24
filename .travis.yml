@@ -73,8 +73,8 @@ install:
 
 script:
  - if [ -z "$STACK" ]; then
-   travis_retry cabal-1.18 install -j2 --enable-tests -ftesting --only-dependencies;
-   cabal-1.18 install --enable-tests -ftesting;
+   travis_retry cabal-1.18 install -j2 --enable-tests -ftesting --only-dependencies --upgrade-dependencies;
+   cabal-1.18 install --enable-tests -ftesting --reinstall;
    else
    stack $ARGS --no-terminal --install-ghc test --haddock;
    fi;
