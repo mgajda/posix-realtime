@@ -1,5 +1,9 @@
 -*-Changelog-*-
 
+0.0.4  May 2015
+	* Thanks Magnus Therning for the patch that uses ByteStrings instead
+	of Strings in API.
+
 0.0.3  May 2015
 	* Relaxed dependencies for GHC 7.10
 

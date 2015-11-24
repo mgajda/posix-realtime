@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 language: c
 
 addons:
@@ -19,15 +19,15 @@ env:
  - HPVER=2012.4.0.0
  - STACK=" "
  - STACK="--resolver nightly"
+ - STACK="--resolver lts-2"
+ - STACK="--resolver lts-3"
+ - STACK="--resolver lts"
 # - GHCVER=7.8.4
 # - GHCVER=7.4.2
 # - GHCVER=7.6.1
 # - GHCVER=7.6.2
 # - GHCVER=7.6.3
 # - GHCVER=7.8.1
-# - STACK="--resolver lts-2"
-# - STACK="--resolver lts-3"
-# - STACK="--resolver lts"
 
 before_install:
  - if [ -z "$STACK" ]; then
@@ -61,7 +61,8 @@ before_install:
    fi;
 
 install:
- - if [ -z "$STACK" ]; then
+ - export PATH=/opt/ghc/$GHCVER/bin:$PATH;
+   if [ -z "$STACK" ]; then
    cabal-1.18 update;
    fi;
 
