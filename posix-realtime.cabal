@@ -14,6 +14,7 @@ description:
 	The package is not supported under Windows (except under Cygwin).
 cabal-version: >= 1.6
 build-type: Simple
+extra-source-files:  README.md changelog.md stack.yaml AUTHORS
 
 library
   exposed-modules:
