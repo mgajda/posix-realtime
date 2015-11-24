@@ -9,25 +9,25 @@ addons:
 matrix:
   allow_failures:
     - env: GHCVER=head
-    - env: GHCVER=7.8.1
     - env: STACK="--resolver nightly"
 
 env:
- - GHCVER=7.4.2
- - GHCVER=7.6.1
- - GHCVER=7.6.2
  - GHCVER=7.6.3
- - GHCVER=7.8.1
- - GHCVER=7.8.4
  - GHCVER=7.10.2
  - GHCVER=head
  - HPVER=2013.2.0.0
  - HPVER=2012.4.0.0
- - STACK=""
- - STACK="--resolver lts-2"
- - STACK="--resolver lts-3"
- - STACK="--resolver lts"
+ - STACK=" "
  - STACK="--resolver nightly"
+# - GHCVER=7.8.4
+# - GHCVER=7.4.2
+# - GHCVER=7.6.1
+# - GHCVER=7.6.2
+# - GHCVER=7.6.3
+# - GHCVER=7.8.1
+# - STACK="--resolver lts-2"
+# - STACK="--resolver lts-3"
+# - STACK="--resolver lts"
 
 before_install:
  - if [ -z "$STACK" ]; then
@@ -61,12 +61,12 @@ before_install:
    fi
 
 install:
- - if [ -z $STACK ]; then
+ - if [ -z "$STACK" ]; then
    cabal-1.18 update
    fi
 
 script:
- - if [ -z $STACK ]; then
+ - if [ -z "$STACK" ]; then
    travis_retry cabal-1.18 install -j2 --enable-tests -ftesting --only-dependencies
    cabal-1.18 install --enable-tests -ftesting
    else
