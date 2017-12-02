@@ -14,7 +14,7 @@ description:
 	The package is not supported under Windows (except under Cygwin).
 cabal-version: >= 1.6
 build-type: Simple
-extra-source-files:  README.md changelog.md stack.yaml AUTHORS
+extra-source-files:  README.md changelog stack.yaml AUTHORS
 tested-with: GHC==7.8.4, GHC==7.10.2, GHC==7.6.3
 
 library
