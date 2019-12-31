@@ -32,7 +32,7 @@ module System.Posix.Realtime.RTTime (
 #include <time.h>
 
 import System.Posix.Realtime.RTDataTypes
-import System.Posix.Types
+import System.Posix.Types hiding (CClockId)
 import System.Posix.Error
 import System.Posix.Internals
 import Foreign

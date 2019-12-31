@@ -1,5 +1,5 @@
 name:		posix-realtime
-version:	0.0.0.4
+version:	0.0.0.5
 license:	BSD3
 license-file:	LICENSE
 category:       System
@@ -15,7 +15,7 @@ description:
 cabal-version: >= 1.6
 build-type: Simple
 extra-source-files:  README.md changelog stack.yaml AUTHORS
-tested-with: GHC==7.8.4, GHC==7.10.2, GHC==7.6.3
+tested-with: GHC==7.8.4, GHC==7.10.2, GHC==7.6.3, GHC==8.4.4
 
 library
   exposed-modules:
@@ -25,7 +25,7 @@ library
                   System.Posix.Realtime.RTDataTypes
                   System.Posix.Realtime.RTTime
                   System.Posix.Realtime.Aio
-  build-depends:  base > 4.5 && < 4.11, bytestring, unix
+  build-depends:  base >= 4.5 && < 5, bytestring, unix
   extensions:	CPP, ForeignFunctionInterface
 
 source-repository head
