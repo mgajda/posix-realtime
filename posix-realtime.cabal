@@ -25,8 +25,8 @@ library
                   System.Posix.Realtime.RTDataTypes
                   System.Posix.Realtime.RTTime
                   System.Posix.Realtime.Aio
-  build-depends:  base > 4.5 && < 5, bytestring, unix
-  extensions:	  CPP, ForeignFunctionInterface
+  build-depends:  base >= 4.5 && < 5, bytestring, unix
+  extensions:	CPP, ForeignFunctionInterface
 
 source-repository head
   type:     git
