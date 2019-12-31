@@ -46,8 +46,6 @@ data ClockId = Clock_Realtime
              | Clock_Process_CPUTime_ID
              | Clock_Thread_CPUTime_ID
 
-type CClockId = Int
-
 data SetTimeFlag = Timer_Abstime
 
 
