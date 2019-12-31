@@ -46,6 +46,8 @@ data ClockId = Clock_Realtime
              | Clock_Process_CPUTime_ID
              | Clock_Thread_CPUTime_ID
 
+type CClockId = Int
+
 data SetTimeFlag = Timer_Abstime
 
 
@@ -155,7 +157,7 @@ foreign import ccall safe "time.h clock_settime"
 
 
 -- | Helper function that maps a clockid to it's C representation.
-mapClockId :: ClockId -> CClockId
+mapClockId :: ClockId -> System.Posix.Realtime.RTTime.CClockId
 mapClockId clockId = case clockId of
   Clock_Realtime             -> (#const CLOCK_REALTIME)
   Clock_Monotonic            -> (#const CLOCK_MONOTONIC)
